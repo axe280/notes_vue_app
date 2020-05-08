@@ -26,9 +26,14 @@ const routes = [
   },
 
   {
-    path: '*',
+    path: '/404',
     name: '404',
     component: Page404
+  },
+
+  {
+    path: '*',
+    redirect: '/404'
   }
 ]
 

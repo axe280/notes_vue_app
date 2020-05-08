@@ -13,6 +13,10 @@ const getters = {
 }
 
 const mutations = {
+  clearDefaultTodos(state) {
+    state.defaultTodos = []
+  },
+
   updateDefaultTodos(state, todos) {
     state.defaultTodos = []
 

@@ -77,7 +77,7 @@ export default {
     ]),
 
     ...mapMutations(
-      'defaultTodos', ['updateDefaultTodos']
+      'defaultTodos', ['updateDefaultTodos', 'clearDefaultTodos']
     ),
 
     changeTitle(title) {
@@ -91,7 +91,6 @@ export default {
 
     cancelNote() {
       this.$router.push('/')
-      // this.setIntoNoteDeafultTodos(this.note.id)
     },
 
     saveNote() {
@@ -101,10 +100,11 @@ export default {
   },
 
   created() {
-    const noteId = this.$route.params.id
+    const routId = this.$route.params.id
+    const note = this.getNoteById(routId)
 
-    if (noteId) {
-      const {id, title, todos} = this.getNoteById(noteId)
+    if (note) {
+      const {id, title, todos} = note
       this.updateDefaultTodos(todos)
 
       this.note.id = id
@@ -112,6 +112,11 @@ export default {
     }
 
     this.note.todos = this.getDefaultTodos
+  },
+
+  beforeRouteLeave(to, from, next) {
+    this.clearDefaultTodos()
+    next()
   }
 }
 </script>
