@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    defaultTodos: [],
     notes: [
       { 
         id: 'tuho',
@@ -31,6 +32,10 @@ export default new Vuex.Store({
 
     getNoteById: state => id => {
       return state.notes.find(note => note.id === id)
+    },
+
+    getDefaultTodos(state) {
+      return state.activeTodos
     }
   },
 
@@ -55,6 +60,26 @@ export default new Vuex.Store({
     removeNote(state, id) {
       const note = state.notes.find(note => note.id === id)
       state.notes.splice(note, 1)
+    },
+
+    updateDefaultTodos(state, todos) {
+      state.defaultTodos = []
+
+      todos.forEach(todo => {
+        const updTodo = {...todo}
+        state.defaultTodos.push(updTodo)
+      })
+    },
+
+    setIntoNoteDeafultTodos(state, id) {
+      const updTodos = []
+      state.defaultTodos.forEach(todo => {
+        const updTodo = {...todo}
+        updTodos.push(updTodo)
+      })
+
+      const noteIndex = state.notes.findIndex(note => note.id === id)
+      state.notes[noteIndex].todos = updTodos
     }
   }
 })

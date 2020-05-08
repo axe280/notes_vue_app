@@ -68,8 +68,11 @@ export default {
   methods: {
     ...mapMutations([
       'addNote',
-      'removeNote'
+      'removeNote',
+      'updateDefaultTodos',
+      'setIntoNoteDeafultTodos'
     ]),
+
     changeTitle(title) {
       this.note.title = title
     },
@@ -81,6 +84,7 @@ export default {
 
     cancelNote() {
       this.$router.push('/')
+      this.setIntoNoteDeafultTodos(this.note.id)
     },
 
     saveNote() {
@@ -94,10 +98,11 @@ export default {
 
     if (noteId) {
       const {id, title, todos} = this.getNoteById(noteId)
+      this.updateDefaultTodos(todos)
 
       this.note.id = id
       this.note.title = title
-      this.note.todos = todos.concat()
+      this.note.todos = todos
     }
   }
 }
