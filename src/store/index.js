@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import defaultTodos from './modules/defaultTodos'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    defaultTodos: [],
+    // defaultTodos: [],
     notes: [
       { 
         id: 'tuho',
@@ -34,9 +35,9 @@ export default new Vuex.Store({
       return state.notes.find(note => note.id === id)
     },
 
-    getDefaultTodos(state) {
-      return state.activeTodos
-    }
+    // getDefaultTodos(state) {
+    //   return state.activeTodos
+    // }
   },
 
   mutations: {
@@ -62,15 +63,6 @@ export default new Vuex.Store({
       state.notes.splice(note, 1)
     },
 
-    updateDefaultTodos(state, todos) {
-      state.defaultTodos = []
-
-      todos.forEach(todo => {
-        const updTodo = {...todo}
-        state.defaultTodos.push(updTodo)
-      })
-    },
-
     setIntoNoteDeafultTodos(state, id) {
       const updTodos = []
       state.defaultTodos.forEach(todo => {
@@ -81,5 +73,9 @@ export default new Vuex.Store({
       const noteIndex = state.notes.findIndex(note => note.id === id)
       state.notes[noteIndex].todos = updTodos
     }
+  },
+
+  modules: {
+    defaultTodos
   }
 })

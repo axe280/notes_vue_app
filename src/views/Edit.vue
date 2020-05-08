@@ -50,7 +50,7 @@ export default {
       note: {
         id: String(Date.now()),
         title: 'Note title',
-        todos: []
+        todos: null
       }
     }
   },
@@ -59,6 +59,10 @@ export default {
     ...mapGetters([
       'getNoteById'
     ]),
+
+    ...mapGetters(
+      'defaultTodos', ['getDefaultTodos']
+    ),
 
     isThisStoreNote() {
       return this.getNoteById(this.note.id) ? true : false
@@ -69,9 +73,12 @@ export default {
     ...mapMutations([
       'addNote',
       'removeNote',
-      'updateDefaultTodos',
       'setIntoNoteDeafultTodos'
     ]),
+
+    ...mapMutations(
+      'defaultTodos', ['updateDefaultTodos']
+    ),
 
     changeTitle(title) {
       this.note.title = title
@@ -84,7 +91,7 @@ export default {
 
     cancelNote() {
       this.$router.push('/')
-      this.setIntoNoteDeafultTodos(this.note.id)
+      // this.setIntoNoteDeafultTodos(this.note.id)
     },
 
     saveNote() {
@@ -102,8 +109,9 @@ export default {
 
       this.note.id = id
       this.note.title = title
-      this.note.todos = todos
     }
+
+    this.note.todos = this.getDefaultTodos
   }
 }
 </script>
