@@ -2,16 +2,37 @@
   <div class="edit-page">
     <div class="edit-page__head-panel">
       <edit-nav></edit-nav>
-      <button class="btn-flat btn-pd-0 red-text">Delete note</button>
+      <button
+        @click="deleteNote"
+        :disabled="!isThisStoreNote"
+        class="btn-flat btn-pd-0 red-text"
+      >Delete note</button>
     </div>
 
-    <edit-title></edit-title>
+    <edit-title 
+      :title="note.title"
+      @title-changed="changeTitle"
+    ></edit-title>
 
-    <edit-todo-list></edit-todo-list>
+    <edit-todo-list
+      :todos="note.todos"
+    ></edit-todo-list>
+
+    <div class="edit-buttons">
+      <button 
+        class="btn red"
+        @click="cancelNote"
+      >Cancel</button>
+      <button
+        @click="saveNote"
+        class="btn"
+      >Save</button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 import EditTitle from '@/components/EditTitle.vue'
 import EditNav from '@/components/EditNav.vue'
 import EditTodoList from '@/components/EditTodoList.vue'
@@ -22,6 +43,62 @@ export default {
     EditTitle,
     EditNav,
     EditTodoList
+  },
+
+  data() {
+    return {
+      note: {
+        id: String(Date.now()),
+        title: 'Note title',
+        todos: []
+      }
+    }
+  },
+
+  computed: {
+    ...mapGetters([
+      'getNoteById'
+    ]),
+
+    isThisStoreNote() {
+      return this.getNoteById(this.note.id) ? true : false
+    }
+  },
+
+  methods: {
+    ...mapMutations([
+      'addNote',
+      'removeNote'
+    ]),
+    changeTitle(title) {
+      this.note.title = title
+    },
+
+    deleteNote() {
+      this.removeNote(this.note.id)
+      this.$router.push('/')
+    },
+
+    cancelNote() {
+      this.$router.push('/')
+    },
+
+    saveNote() {
+      this.addNote(this.note)
+      this.$router.push('/')
+    }
+  },
+
+  created() {
+    const noteId = this.$route.params.id
+
+    if (noteId) {
+      const {id, title, todos} = this.getNoteById(noteId)
+
+      this.note.id = id
+      this.note.title = title
+      this.note.todos = todos.concat()
+    }
   }
 }
 </script>
@@ -33,6 +110,16 @@ export default {
       align-items: center;
       justify-content: space-between;
       margin-bottom: 30px;
+    }
+  }
+  
+  .edit-buttons {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end;
+
+    .btn {
+      margin-left: 20px;
     }
   }
 </style>

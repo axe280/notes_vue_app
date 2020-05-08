@@ -1,7 +1,20 @@
 <template>
   <div class="home-page">
     <h2>Notes</h2>
-    
+
+    <ul>
+      <li
+        v-for="note in getNotes"
+        :key="note.id"
+      >
+        <router-link
+          :to="`/edit/${note.id}`"
+          tag="a"
+        >
+          <h4>{{ note.title }}</h4>
+        </router-link>
+      </li>
+    </ul>
     
     <div class="create-fix-box">
       <div class="container-st">
@@ -18,13 +31,14 @@
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Home',
-  components: {
-    // HelloWorld
+  computed: {
+    ...mapGetters([
+      'getNotes'
+    ])
   }
 }
 </script>

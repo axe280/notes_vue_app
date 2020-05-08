@@ -20,6 +20,12 @@ const routes = [
   },
 
   {
+    path: '/edit/:id',
+    name: 'Edit',
+    component: Edit
+  },
+
+  {
     path: '*',
     name: '404',
     component: Page404

@@ -5,36 +5,56 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    todos: [
-      {
-        id: Date.now(),
-        title: 'title',
-        checkedIn: false
+    notes: [
+      { 
+        id: 'tuho',
+        title: 'time itme',
+        todos: [
+          { title: 'todos item', id: 'uthonuhnountouo', checkedIn: true }
+        ]
+      },
+
+      { 
+        id: '34242342345551',
+        title: '1 hntoh enuoh e',
+        todos: [
+          { title: '1 item', id: '24234234234', checkedIn: false }
+        ]
       }
-    ],
+    ]
   },
 
   getters: {
-    getTodos(state) {
-      return state.todos
+    getNotes(state) {
+      return state.notes
+    },
+
+    getNoteById: state => id => {
+      return state.notes.find(note => note.id === id)
     }
   },
 
   mutations: {
-    createTodo(state, todo) {
-      state.todos.push(todo)
+    createNote(state, note) {
+      state.notes.push(note)
     },
 
-    updateTodo(state, {id, title, checkedIn}) {
-      const todos = state.todos.concat()
-      const todoIndex = state.todos.findIndex(todo => todo.id === id)
+    addNote(state, newNote) {
+      const noteIndex = state.notes.findIndex(note => note.id === newNote.id)
 
-      todos[todoIndex] = {id, title, checkedIn}
-      state.todos = todos
+      if (noteIndex !== -1) {
+        const notes = state.notes.concat()
+  
+        notes[noteIndex] = {...newNote}
+        state.notes = notes
+      } else {
+        state.notes.unshift(newNote)
+      }
     },
 
-    removeTodo(state, id) {
-      state.todos = state.todos.filter(todo => todo.id !== id)
+    removeNote(state, id) {
+      const note = state.notes.find(note => note.id === id)
+      state.notes.splice(note, 1)
     }
   }
 })
