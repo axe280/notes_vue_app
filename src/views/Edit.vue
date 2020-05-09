@@ -64,6 +64,10 @@ export default {
       'defaultTodos', ['getDefaultTodos']
     ),
 
+    ...mapGetters(
+      'modals', ['isLeavePage', 'getLeaveToPagePath']
+    ),
+
     isThisStoreNote() {
       return this.getNoteById(this.note.id) ? true : false
     }
@@ -80,13 +84,19 @@ export default {
       'defaultTodos', ['updateDefaultTodos', 'clearDefaultTodos']
     ),
 
+    ...mapMutations(
+      'modals', ['showModal', 'showCurrentModal', 'setLeaveToPagePath', 'setLeavePage']
+    ),
+
     changeTitle(title) {
       this.note.title = title
     },
 
     deleteNote() {
-      this.removeNote(this.note.id)
-      this.$router.push('/')
+      this.showModal(true)
+      this.showCurrentModal('modal-delete')
+      // this.removeNote(this.note.id)
+      // this.$router.push('/')
     },
 
     cancelNote() {
@@ -95,6 +105,7 @@ export default {
 
     saveNote() {
       this.addNote(this.note)
+      this.setLeavePage(true)
       this.$router.push('/')
     }
   },
@@ -115,8 +126,16 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    this.clearDefaultTodos()
-    next()
+    if (!this.isLeavePage) {
+      this.showModal(true)
+      this.showCurrentModal('modal-leave')
+      this.setLeaveToPagePath(to.path)
+    }
+    else {
+      this.clearDefaultTodos()
+      this.setLeavePage(false)
+      next()
+    }
   }
 }
 </script>

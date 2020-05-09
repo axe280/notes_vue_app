@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <modal v-if="isShow"></modal>
+
     <header class="header grey lighten-2">
       <div class="container-st">
         <div class="logo">
@@ -15,6 +17,19 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'App',
+  computed: {
+    ...mapGetters(
+      'modals', ['isShow']
+    )
+  }
+}
+</script>
 
 <style lang="scss">
   body {

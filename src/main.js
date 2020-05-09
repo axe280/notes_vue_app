@@ -4,6 +4,8 @@ import router from './router'
 import store from './store'
 import 'materialize-css/dist/css/materialize.min.css'
 
+import Modal from '@/components/Modal.vue'
+
 Vue.config.productionTip = false
 
 Vue.directive('focus', {
@@ -11,6 +13,8 @@ Vue.directive('focus', {
     el.focus()
   }
 })
+
+Vue.component('modal', Modal)
 
 new Vue({
   router,
