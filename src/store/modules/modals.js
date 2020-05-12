@@ -1,6 +1,6 @@
 const state = {
+  allowLeavePage: false,
   show: false,
-  leavePage: false,
   leaveToPagePath: '',
   currentModal: null
 }
@@ -12,10 +12,6 @@ const getters = {
 
   getCurrentModal(state) {
     return state.currentModal
-  },
-
-  isLeavePage(state) {
-    return state.leavePage
   },
 
   getLeaveToPagePath(state) {
@@ -33,7 +29,7 @@ const mutations = {
   },
 
   setLeavePage(state, payload) {
-    state.leavePage = payload
+    state.allowLeavePage = payload
   },
 
   setLeaveToPagePath(state, path) {

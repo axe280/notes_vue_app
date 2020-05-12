@@ -10,12 +10,12 @@
     </div>
 
     <edit-title 
-      :title="note.title"
+      :title="getDefaultNote.title"
       @title-changed="changeTitle"
     ></edit-title>
 
     <edit-todo-list
-      :todos="note.todos"
+      :todos="getDefaultNote.todos"
     ></edit-todo-list>
 
     <div class="edit-buttons">
@@ -45,31 +45,21 @@ export default {
     EditTodoList
   },
 
-  data() {
-    return {
-      note: {
-        id: String(Date.now()),
-        title: 'Note title',
-        todos: null
-      }
-    }
-  },
-
   computed: {
     ...mapGetters([
       'getNoteById'
     ]),
 
     ...mapGetters(
-      'defaultTodos', ['getDefaultTodos']
+      'modals', ['isAllowLeavePage', 'getLeaveToPagePath']
     ),
 
     ...mapGetters(
-      'modals', ['isLeavePage', 'getLeaveToPagePath']
+      'defaultNote', ['getDefaultNote']
     ),
 
     isThisStoreNote() {
-      return this.getNoteById(this.note.id) ? true : false
+      return this.getNoteById(this.getDefaultNote.id) ? true : false
     }
   },
 
@@ -81,15 +71,15 @@ export default {
     ]),
 
     ...mapMutations(
-      'defaultTodos', ['updateDefaultTodos', 'clearDefaultTodos']
-    ),
-
-    ...mapMutations(
       'modals', ['showModal', 'showCurrentModal', 'setLeaveToPagePath', 'setLeavePage']
     ),
 
+    ...mapMutations(
+      'defaultNote', ['copyNote', 'setDefaultNoteTitle']
+    ),
+
     changeTitle(title) {
-      this.note.title = title
+      this.setDefaultNoteTitle(title)
     },
 
     deleteNote() {
@@ -114,25 +104,16 @@ export default {
     const routId = this.$route.params.id
     const note = this.getNoteById(routId)
 
-    if (note) {
-      const {id, title, todos} = note
-      this.updateDefaultTodos(todos)
-
-      this.note.id = id
-      this.note.title = title
-    }
-
-    this.note.todos = this.getDefaultTodos
+    if (note) this.copyNote(note)
   },
 
   beforeRouteLeave(to, from, next) {
-    if (!this.isLeavePage) {
+    if (!this.isAllowLeavePage) {
       this.showModal(true)
       this.showCurrentModal('modal-leave')
       this.setLeaveToPagePath(to.path)
     }
     else {
-      this.clearDefaultTodos()
       this.setLeavePage(false)
       next()
     }

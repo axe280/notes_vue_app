@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import defaultTodos from './modules/defaultTodos'
+import defaultNote from './modules/defaultNote'
 import modals from './modules/modals'
 
 Vue.use(Vuex)
@@ -61,7 +61,7 @@ export default new Vuex.Store({
   },
 
   modules: {
-    defaultTodos,
+    defaultNote,
     modals
   }
 })
