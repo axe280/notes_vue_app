@@ -10,6 +10,10 @@ const getters = {
     return state.show
   },
 
+  isAllowLeavePage(state) {
+    return state.allowLeavePage
+  },
+
   getCurrentModal(state) {
     return state.currentModal
   },
@@ -28,7 +32,7 @@ const mutations = {
     state.currentModal = modalName
   },
 
-  setLeavePage(state, payload) {
+  setAllowLeavePage(state, payload) {
     state.allowLeavePage = payload
   },
 

@@ -2,19 +2,28 @@
   <div class="home-page">
     <h2>Notes</h2>
 
-    <ul>
-      <li
-        v-for="note in getNotes"
-        :key="note.id"
-      >
-        <router-link
-          :to="`/edit/${note.id}`"
-          tag="a"
+    <div class="notes">
+      <ul>
+        <li
+          v-for="note in getNotes"
+          :key="note.id"
         >
-          <h4>{{ note.title }}</h4>
-        </router-link>
-      </li>
-    </ul>
+          <router-link
+            :to="`/edit/${note.id}`"
+            tag="a"
+          >
+            <h4>{{ note.title }}</h4>
+          </router-link>
+          <ul class="note-todos">
+            <li
+              v-for="todo in note.todos"
+              :key="todo.id"
+              :class="[todo.checkedIn ? 'checked-t' : '']"
+            >{{ todo.title }}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
     
     <div class="create-fix-box">
       <div class="container-st">
@@ -61,5 +70,39 @@ export default {
     .btn {
       width: 100%;
     }
+  }
+
+  .notes {
+    margin-left: 20px;
+    padding-top: 5px;
+  }
+
+  .note-todos {
+    max-height: 80px;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 60%;
+      background: linear-gradient(to bottom, rgba(#f5f5f5, 0.3) 0%, rgba(#f5f5f5, 1) 87%);
+    }
+
+    li {
+      padding-left: 20px;
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.5em;
+    }
+  }
+
+  .checked-t {
+    text-decoration: line-through;
   }
 </style>

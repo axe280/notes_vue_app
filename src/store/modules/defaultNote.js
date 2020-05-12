@@ -1,7 +1,7 @@
 const state = {
   defaultNote: {
-    id: String(Date.now()),
-    title: 'Note title',
+    id: null,
+    title: '',
     todos: []
   }
 }
@@ -31,6 +31,12 @@ const mutations = {
 
   setDefaultNoteTitle(state, title) {
     state.defaultNote.title = title
+  },
+
+  createDefaultNote(state) {
+    state.defaultNote.id = String(Date.now()),
+    state.defaultNote.title = 'Note title',
+    state.defaultNote.todos = []
   },
 
   createTodo(state) {

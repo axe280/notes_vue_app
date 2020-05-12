@@ -4,7 +4,7 @@
       <edit-nav></edit-nav>
       <button
         @click="deleteNote"
-        :disabled="!isThisStoreNote"
+        :disabled="!getNoteById(getDefaultNote.id)"
         class="btn-flat btn-pd-0 red-text"
       >Delete note</button>
     </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import EditTitle from '@/components/EditTitle.vue'
 import EditNav from '@/components/EditNav.vue'
 import EditTodoList from '@/components/EditTodoList.vue'
@@ -46,37 +46,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'getNoteById'
-    ]),
-
-    ...mapGetters(
-      'modals', ['isAllowLeavePage', 'getLeaveToPagePath']
-    ),
-
-    ...mapGetters(
-      'defaultNote', ['getDefaultNote']
-    ),
-
-    isThisStoreNote() {
-      return this.getNoteById(this.getDefaultNote.id) ? true : false
-    }
+    ...mapGetters(['getNoteById']),
+    ...mapGetters('modals', ['isAllowLeavePage', 'getLeaveToPagePath']),
+    ...mapGetters('defaultNote', ['getDefaultNote'])
   },
 
   methods: {
-    ...mapMutations([
-      'addNote',
-      'removeNote',
-      'setIntoNoteDeafultTodos'
-    ]),
-
-    ...mapMutations(
-      'modals', ['showModal', 'showCurrentModal', 'setLeaveToPagePath', 'setLeavePage']
-    ),
-
-    ...mapMutations(
-      'defaultNote', ['copyNote', 'setDefaultNoteTitle']
-    ),
+    ...mapActions(['addNote']),
+    ...mapMutations(['setIntoNoteDeafultTodos']),
+    ...mapMutations('modals', ['showModal', 'showCurrentModal', 'setLeaveToPagePath', 'setAllowLeavePage']),
+    ...mapMutations('defaultNote', ['copyNote', 'setDefaultNoteTitle', 'createDefaultNote']),
 
     changeTitle(title) {
       this.setDefaultNoteTitle(title)
@@ -85,8 +64,6 @@ export default {
     deleteNote() {
       this.showModal(true)
       this.showCurrentModal('modal-delete')
-      // this.removeNote(this.note.id)
-      // this.$router.push('/')
     },
 
     cancelNote() {
@@ -94,8 +71,8 @@ export default {
     },
 
     saveNote() {
-      this.addNote(this.note)
-      this.setLeavePage(true)
+      this.addNote(this.getDefaultNote)
+      this.setAllowLeavePage(true)
       this.$router.push('/')
     }
   },
@@ -105,6 +82,7 @@ export default {
     const note = this.getNoteById(routId)
 
     if (note) this.copyNote(note)
+    else this.createDefaultNote()
   },
 
   beforeRouteLeave(to, from, next) {
@@ -114,7 +92,7 @@ export default {
       this.setLeaveToPagePath(to.path)
     }
     else {
-      this.setLeavePage(false)
+      this.setAllowLeavePage(false)
       next()
     }
   }
