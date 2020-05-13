@@ -6,26 +6,7 @@ import modals from './modules/modals'
 Vue.use(Vuex)
 
 const state = {
-  notes: [
-    { 
-      id: 'tuho',
-      title: 'time itme',
-      todos: [
-        { title: 'Todo 1', id: 'uthonuhnountouo', checkedIn: true },
-        { title: 'Todo 2', id: 'uouuo', checkedIn: false },
-        { title: 'Todo 3', id: '24hnuonuo', checkedIn: false },
-        { title: 'Todo 4', id: 'noh2p235235', checkedIn: true }
-      ]
-    },
-
-    { 
-      id: '34242342345551',
-      title: '1 hntoh enuoh e',
-      todos: [
-        { title: '1 item', id: '24234234234', checkedIn: false }
-      ]
-    }
-  ]
+  notes: JSON.parse(localStorage.getItem('notes') || '[]')
 }
 
 const getters = {
@@ -50,11 +31,15 @@ const mutations = {
     } else {
       state.notes.unshift({...newNote})
     }
+
+    localStorage.setItem('notes', JSON.stringify(state.notes))
   },
 
   removeNote(state, id) {
     const noteIndex = state.notes.findIndex(note => note.id === id)
     state.notes.splice(noteIndex, 1)
+
+    localStorage.setItem('notes', JSON.stringify(state.notes))
   }
 }
 
