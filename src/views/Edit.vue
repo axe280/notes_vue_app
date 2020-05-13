@@ -1,7 +1,6 @@
 <template>
   <div class="edit-page">
     <div class="edit-page__head-panel">
-      <edit-nav></edit-nav>
       <button
         @click="deleteNote"
         :disabled="!getNoteById(getDefaultNote.id)"
@@ -34,14 +33,12 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 import EditTitle from '@/components/EditTitle.vue'
-import EditNav from '@/components/EditNav.vue'
 import EditTodoList from '@/components/EditTodoList.vue'
 
 export default {
   name: 'Edit',
   components: {
     EditTitle,
-    EditNav,
     EditTodoList
   },
 
@@ -81,8 +78,12 @@ export default {
     const routId = this.$route.params.id
     const note = this.getNoteById(routId)
 
-    if (note) this.copyNote(note)
-    else this.createDefaultNote()
+    if (note) {
+      this.copyNote(note)
+    }
+    else {
+      this.createDefaultNote()
+    }
   },
 
   beforeRouteLeave(to, from, next) {
@@ -104,8 +105,14 @@ export default {
     &__head-panel {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       margin-bottom: 30px;
+    }
+
+    .btn-flat {
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
   

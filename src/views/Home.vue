@@ -7,6 +7,7 @@
         <li
           v-for="note in getNotes"
           :key="note.id"
+          class="notes-item"
         >
           <router-link
             :to="`/edit/${note.id}`"
@@ -75,6 +76,15 @@ export default {
   .notes {
     margin-left: 20px;
     padding-top: 5px;
+  }
+
+  .notes-item {
+    border-bottom: 1px solid rgba(#000, 0.2);
+    padding-bottom: 25px;
+
+    &:last-child {
+      border: none;
+    }
   }
 
   .note-todos {

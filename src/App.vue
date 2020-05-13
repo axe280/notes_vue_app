@@ -24,9 +24,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'App',
   computed: {
-    ...mapGetters(
-      'modals', ['isShow']
-    )
+    ...mapGetters('modals', ['isShow']),
   }
 }
 </script>
